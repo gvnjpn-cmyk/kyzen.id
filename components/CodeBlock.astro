@@ -1,0 +1,25 @@
+---
+import { highlightJson } from "../lib/highlightJson";
+
+interface Props {
+  data: unknown;
+  label?: string;
+}
+
+const { data, label } = Astro.props;
+const html = highlightJson(data);
+---
+
+<div class="card overflow-hidden">
+  {label && (
+    <div class="flex items-center justify-between border-b border-border px-4 py-2">
+      <span class="font-mono text-xs text-muted">{label}</span>
+      <span class="flex gap-1.5">
+        <span class="h-2.5 w-2.5 rounded-full bg-border"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-border"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-border"></span>
+      </span>
+    </div>
+  )}
+  <pre class="overflow-x-auto p-3 sm:p-4 text-xs sm:text-sm leading-relaxed -mx-4 sm:mx-0 px-3 sm:px-4"><code class="font-mono" set:html={html} /></pre>
+</div>
