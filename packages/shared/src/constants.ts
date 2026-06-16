@@ -2,7 +2,7 @@ import type { EndpointDefinition } from "./types";
 
 export const CREATOR = "Kyzen API" as const;
 
-export const API_BASE_URL = "https://api.kyzen.dev";
+export const API_BASE_URL = "https://kyzenid.zyanz4758.workers.dev";
 
 /**
  * Single source of truth for every public endpoint.
