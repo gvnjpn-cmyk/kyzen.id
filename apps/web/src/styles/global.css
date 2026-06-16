@@ -7,10 +7,16 @@
 @layer base {
   html {
     @apply scroll-smooth;
+    /* Prevent zoom on input focus on iOS */
+    font-size: 16px;
   }
 
   body {
     @apply bg-background text-text font-sans antialiased;
+    /* Prevent layout shift from scrollbar on iOS */
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   ::selection {
@@ -21,31 +27,78 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-primary;
   }
+
+  /* Fix input zoom on iOS */
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  /* Smooth tap highlight on mobile */
+  -webkit-tap-highlight-color: rgba(56, 189, 248, 0.1);
 }
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-6xl px-6;
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
   }
 
   .card {
-    @apply rounded-card border border-border bg-surface;
+    @apply rounded-card border border-border bg-surface overflow-hidden;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-background transition-colors hover:bg-primary/90;
+    @apply inline-flex items-center justify-center rounded-md bg-primary px-4 sm:px-5 py-2.5 text-sm font-semibold text-background transition-colors hover:bg-primary/90 active:bg-primary/80 min-h-[44px] sm:min-h-auto touch-manipulation;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-md border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-text transition-colors hover:border-primary/50 hover:text-primary;
+    @apply inline-flex items-center justify-center rounded-md border border-border bg-surface px-4 sm:px-5 py-2.5 text-sm font-semibold text-text transition-colors hover:border-primary/50 hover:text-primary active:text-primary min-h-[44px] sm:min-h-auto touch-manipulation;
   }
 
   .pill {
-    @apply rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-muted;
+    @apply rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-muted whitespace-nowrap;
   }
 
   .method-get {
-    @apply rounded bg-primary/10 px-2 py-0.5 text-xs font-mono font-semibold text-primary;
+    @apply rounded bg-primary/10 px-2 py-0.5 text-xs font-mono font-semibold text-primary flex-shrink-0;
+  }
+
+  /* Mobile input fixes */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  textarea,
+  select {
+    @apply text-base sm:text-sm;
+    /* Prevent iOS zoom on focus */
+    font-size: 16px;
+  }
+
+  /* Better mobile form layout */
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    @apply rounded-md border border-border bg-surface-2 px-3 py-2 text-text transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  pre {
+    @apply overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0;
+  }
+
+  /* Better table scrolling on mobile */
+  table {
+    @apply w-full overflow-x-auto;
+  }
+
+  /* Safe area for notched phones */
+  @supports (padding: max(0px)) {
+    .container-page {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+    }
   }
 }
 
