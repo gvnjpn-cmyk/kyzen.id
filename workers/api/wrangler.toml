@@ -24,11 +24,11 @@ enabled = true
 # ---------------------------------------------------------------------------
 [[kv_namespaces]]
 binding = "RATE_LIMIT_KV"
-id = "REPLACE_WITH_RATE_LIMIT_KV_ID"
+id = "56064698796648a28d12163acd94677d"
 
 [[kv_namespaces]]
 binding = "SHORTURL_KV"
-id = "REPLACE_WITH_SHORTURL_KV_ID"
+id = "dff8eb82885e4ab2b580717098c564a1"
 
 # ---------------------------------------------------------------------------
 # Secrets (set with `wrangler secret put <NAME>`, do not hardcode here)
