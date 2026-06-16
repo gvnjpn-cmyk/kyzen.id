@@ -1,0 +1,39 @@
+---
+const features = [
+  {
+    title: "Fast Responses",
+    description: "Runs on Cloudflare's global edge network, so requests are served close to where they're made.",
+  },
+  {
+    title: "Reliable Endpoints",
+    description: "Consistent response shapes, sensible error handling, and automatic retries for external calls.",
+  },
+  {
+    title: "Simple Integration",
+    description: "Plain REST over HTTPS. No SDK, no auth dance — just call an endpoint and get JSON back.",
+  },
+  {
+    title: "Modern Architecture",
+    description: "Built with Hono, TypeScript, and OpenAPI from day one, so the docs always match the code.",
+  },
+];
+---
+
+<section class="container-page py-16 sm:py-24">
+  <div class="max-w-2xl">
+    <h2 class="font-display text-2xl font-semibold text-text sm:text-3xl">Built for everyday use</h2>
+    <p class="mt-3 text-muted">
+      Kyzen API stays small on purpose — a focused set of endpoints that are easy to learn,
+      easy to depend on, and easy to maintain.
+    </p>
+  </div>
+
+  <div class="mt-10 grid gap-4 sm:grid-cols-2">
+    {features.map((feature) => (
+      <div class="card p-6">
+        <h3 class="font-display text-lg font-semibold text-text">{feature.title}</h3>
+        <p class="mt-2 text-sm text-muted">{feature.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
