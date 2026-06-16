@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-text font-sans antialiased;
+  }
+
+  ::selection {
+    @apply bg-primary/30 text-text;
+  }
+
+  /* Visible keyboard focus, kept subtle but unmistakable */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-6;
+  }
+
+  .card {
+    @apply rounded-card border border-border bg-surface;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-background transition-colors hover:bg-primary/90;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-md border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-text transition-colors hover:border-primary/50 hover:text-primary;
+  }
+
+  .pill {
+    @apply rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-muted;
+  }
+
+  .method-get {
+    @apply rounded bg-primary/10 px-2 py-0.5 text-xs font-mono font-semibold text-primary;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

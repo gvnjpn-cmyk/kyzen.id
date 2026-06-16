@@ -1,0 +1,100 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { ENDPOINTS, CATEGORY_LABELS, API_BASE_URL } from "@kyzen/shared";
+
+const categories = ["ai", "tools", "utility", "fun", "image"] as const;
+const totalEndpoints = ENDPOINTS.length;
+---
+
+<Layout title="Status" description="Live status, uptime, and endpoint count for Kyzen API.">
+  <div class="container-page py-12 sm:py-16">
+    <div class="max-w-2xl">
+      <h1 class="font-display text-3xl font-semibold text-text sm:text-4xl">Status</h1>
+      <p class="mt-3 text-muted">
+        Live health check against <code class="font-mono text-primary">{API_BASE_URL}/api/status</code>.
+      </p>
+    </div>
+
+    <!-- Top-level status cards -->
+    <div class="mt-8 grid gap-4 sm:grid-cols-3">
+      <div class="card p-6">
+        <p class="text-xs font-semibold uppercase tracking-wide text-muted">API Status</p>
+        <div class="mt-3 flex items-center gap-2">
+          <span id="status-dot" class="h-2.5 w-2.5 rounded-full bg-muted"></span>
+          <span id="status-text" class="font-display text-xl font-semibold text-text">Checking…</span>
+        </div>
+      </div>
+
+      <div class="card p-6">
+        <p class="text-xs font-semibold uppercase tracking-wide text-muted">Uptime (current isolate)</p>
+        <p id="status-uptime" class="mt-3 font-display text-xl font-semibold text-text">—</p>
+      </div>
+
+      <div class="card p-6">
+        <p class="text-xs font-semibold uppercase tracking-wide text-muted">Total Endpoints</p>
+        <p class="mt-3 font-display text-xl font-semibold text-text">{totalEndpoints}</p>
+      </div>
+    </div>
+
+    <p id="status-timestamp" class="mt-3 text-xs text-muted"></p>
+
+    <!-- Per-category breakdown -->
+    <div class="mt-12">
+      <h2 class="font-display text-xl font-semibold text-text">Endpoints by category</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {categories.map((category) => {
+          const count = ENDPOINTS.filter((e) => e.category === category).length;
+          return (
+            <div class="card p-6">
+              <p class="font-display text-2xl font-semibold text-text">{count}</p>
+              <p class="mt-1 text-sm text-muted">{CATEGORY_LABELS[category]}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <p class="mt-12 text-xs text-muted">
+      "Uptime" reflects the lifetime of the currently active Cloudflare Worker isolate, not historical
+      platform uptime. For incident history and long-term uptime tracking, connect an external monitor
+      (e.g. an uptime-check service) and surface its public status page here.
+    </p>
+  </div>
+</Layout>
+
+<script type="module" define:vars={{ API_BASE_URL }}>
+  const statusDot = document.getElementById("status-dot");
+  const statusText = document.getElementById("status-text");
+  const statusUptime = document.getElementById("status-uptime");
+  const statusTimestamp = document.getElementById("status-timestamp");
+
+  function formatUptime(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h}h ${m}m ${s}s`;
+  }
+
+  async function checkStatus() {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/status`);
+      const data = await res.json();
+
+      if (data.success) {
+        statusDot.className = "h-2.5 w-2.5 rounded-full bg-success";
+        statusText.textContent = "Operational";
+        statusUptime.textContent = formatUptime(data.result.uptimeSeconds);
+        statusTimestamp.textContent = `Last checked: ${new Date(data.result.timestamp).toLocaleString()}`;
+      } else {
+        throw new Error(data.message);
+      }
+    } catch {
+      statusDot.className = "h-2.5 w-2.5 rounded-full bg-red-400";
+      statusText.textContent = "Unreachable";
+      statusUptime.textContent = "—";
+      statusTimestamp.textContent = `Last checked: ${new Date().toLocaleString()}`;
+    }
+  }
+
+  checkStatus();
+</script>
